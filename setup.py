@@ -13,8 +13,8 @@ dependencies = [
 VERSION = "0.3.4.2"
 
 setup(
-    name='pymatch',
-    packages=['pymatch'],
+    name='pymatch_ds',
+    packages=['pymatch_ds'],
     version=VERSION,
     description='Matching techniques for Observational Studies',
     author='Ben Miroglio',
