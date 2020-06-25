@@ -1,9 +1,9 @@
 README.md
 setup.cfg
 setup.py
-pymatch/Matcher.py
-pymatch/__init__.py
-pymatch/functions.py
+pymatch_ds/Matcher.py
+pymatch_ds/__init__.py
+pymatch_ds/functions.py
 pymatch.egg-info/PKG-INFO
 pymatch.egg-info/SOURCES.txt
 pymatch.egg-info/dependency_links.txt
