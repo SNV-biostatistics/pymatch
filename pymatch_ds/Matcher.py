@@ -1,6 +1,6 @@
 from __future__ import print_function
-from pymatch import *
-import pymatch.functions as uf
+from pymatch_ds import *
+import pymatch_ds.functions as uf
 
 
 class Matcher:
