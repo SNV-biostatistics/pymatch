@@ -64,7 +64,7 @@ class Matcher:
         self.xvars = [i for i in self.data.columns if i not in self.exclude]
         
         # test & control sets
-        self.test= self.data[self.data[ds] == 1]
+        self.test = self.data[self.data[ds] == 1]
         self.control = self.data[self.data[ds] == 2]
         self.testn = len(self.test)
         self.controln = len(self.control)
@@ -132,8 +132,8 @@ class Matcher:
                 uf.progress(i + 1, nmodels, prestr = "Fitting Models on Balanced Samples")
                 # sample from majority to create balance dataset
                 df = self.balanced_sample()
-                df = pd.concat([uf.drop_static_cols(df[df[self.yvar] == 1], yvar = self.yvar),
-                                uf.drop_static_cols(df[df[self.yvar] == 0], yvar = self.yvar)],
+                df = pd.concat([uf.drop_static_cols(df[df[self.ds] == 1], yvar = self.yvar),
+                                uf.drop_static_cols(df[df[self.ds] == 2], yvar = self.yvar)],
                                sort = True)
                 y_samp, X_samp = patsy.dmatrices(self.formula, data = df, return_type = 'dataframe')
                 X_samp.drop(self.yvar, axis = 1, errors = 'ignore', inplace = True)
