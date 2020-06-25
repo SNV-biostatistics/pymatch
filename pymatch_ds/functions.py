@@ -1,5 +1,5 @@
 from __future__ import division
-from pymatch import *
+from pymatch_ds import *
 import sys
 import numpy as np
 
