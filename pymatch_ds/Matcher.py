@@ -133,8 +133,8 @@ class Matcher:
                 # sample from majority to create balance dataset
                 df = self.balanced_sample()
                 # removing static columns from each individual data set
-                df_1, col_1 = drop_static_cols(df[df[model.ds] == 1], model.yvar, model.ds)
-                df_2, col_2 = drop_static_cols(df[df[model.ds] == 2], model.yvar, model.ds)
+                df_1, col_1 = uf.drop_static_cols(df[df[model.ds] == 1], model.yvar, model.ds)
+                df_2, col_2 = uf.drop_static_cols(df[df[model.ds] == 2], model.yvar, model.ds)
                 # conditional if the dropped column is the same. if it is, formula will drop the static column
                 if col_1 == col_2:
                     removed = col_1
