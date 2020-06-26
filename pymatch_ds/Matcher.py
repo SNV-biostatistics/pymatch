@@ -144,7 +144,7 @@ class Matcher:
                     formula = '{} ~ {}'.format(self.yvar_escaped, ' + '.join(xvars))
                 else:
                     formula = '{} ~ {}'.format(self.yvar_escaped, ' + '.join(self.xvars_escaped))
-                y_samp, X_samp = patsy.dmatrices(self.formula, data = df, return_type = 'dataframe')
+                y_samp, X_samp = patsy.dmatrices(formula, data = df, return_type = 'dataframe')
                 X_samp.drop(self.yvar, axis = 1, errors = 'ignore', inplace = True)
                 glm = GLM(y_samp, X_samp, family = sm.families.Binomial())
 
