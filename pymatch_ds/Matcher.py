@@ -132,9 +132,18 @@ class Matcher:
                 uf.progress(i + 1, nmodels, prestr = "Fitting Models on Balanced Samples")
                 # sample from majority to create balance dataset
                 df = self.balanced_sample()
-                df = pd.concat([uf.drop_static_cols(df[df[self.ds] == 1], yvar = self.yvar),
-                                uf.drop_static_cols(df[df[self.ds] == 2], yvar = self.yvar)],
-                               sort = True)
+                # removing static columns from each individual data set
+                df_1, col_1 = drop_static_cols(df[df[model.ds] == 1], model.yvar, model.ds)
+                df_2, col_2 = drop_static_cols(df[df[model.ds] == 2], model.yvar, model.ds)
+                # conditional if the dropped column is the same. if it is, formula will drop the static column
+                if col_1 == col_2:
+                    removed = col_1
+                    df = pd.concat([df_1, df_2], sort = True)
+                    xvars = model.xvars
+                    xvars.remove(removed)
+                    formula = '{} ~ {}'.format(model.yvar_escaped, ' + '.join(xvars))
+                else:
+                    formula = '{} ~ {}'.format(model.yvar_escaped, ' + '.join(model.xvars_escaped))
                 y_samp, X_samp = patsy.dmatrices(self.formula, data = df, return_type = 'dataframe')
                 X_samp.drop(self.yvar, axis = 1, errors = 'ignore', inplace = True)
                 glm = GLM(y_samp, X_samp, family = sm.families.Binomial())
