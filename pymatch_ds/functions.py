@@ -26,17 +26,19 @@ def import_sas(df):
 def progress(i, n, prestr = ''):
     sys.stdout.write('\r{}: {}\{}'.format(prestr, i, n))
     
-def drop_static_cols(df, yvar, cols = None):
+def drop_static_cols(df, yvar, ds, cols = None):
     if not cols:
         cols = list(df.columns)
     # will be static for both groups
     cols.pop(cols.index(yvar))
+    cols.pop(cols.index(ds))
     for col in df[cols]:
         n_unique = len(np.unique(df[col]))
         if n_unique == 1:
             df.drop(col, axis = 1, inplace = True)
             sys.stdout.write('\rStatic column dropped: {}'.format(col))
-    return df
+            removed = col
+    return df, removed
 
 def std_diff(a, b):
     sd = np.std(a.append(b))
