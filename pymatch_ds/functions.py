@@ -32,13 +32,18 @@ def drop_static_cols(df, yvar, ds, cols = None):
     # will be static for both groups
     cols.pop(cols.index(yvar))
     cols.pop(cols.index(ds))
-    for col in df[cols]:
-        n_unique = len(np.unique(df[col]))
-        if n_unique == 1:
-            df.drop(col, axis = 1, inplace = True)
-            sys.stdout.write('\rStatic column dropped: {}'.format(col))
-            removed = col
-    return df, removed
+    
+    # empty lists to append to
+    b = []
+    c = []
+    for col in cols:
+        b.append(len(np.unique(df[col])))
+    [c.append(cols[i]) for i in range(len(b)) if b[i] == 1]
+    # drop these columns
+    df.drop(c, axis = 1, inplace = True)
+    sys.stdout.write('\rStatic columns dropped: {}'.format(c))
+    
+    return df, c
 
 def std_diff(a, b):
     sd = np.std(a.append(b))
