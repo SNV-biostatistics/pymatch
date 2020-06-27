@@ -132,18 +132,15 @@ class Matcher:
                 uf.progress(i + 1, nmodels, prestr = "Fitting Models on Balanced Samples")
                 # sample from majority to create balance dataset
                 df = self.balanced_sample()
-                # removing static columns from each individual data set
-                df_1, col_1 = uf.drop_static_cols(df[df[self.ds] == 1], self.yvar, self.ds)
-                df_2, col_2 = uf.drop_static_cols(df[df[self.ds] == 2], self.yvar, self.ds)
-                # conditional if the dropped column is the same. if it is, formula will drop the static column
-                if col_1 == col_2:
-                    removed = col_1
-                    df = pd.concat([df_1, df_2], sort = True)
-                    xvars = self.xvars
-                    xvars.remove(removed)
-                    formula = '{} ~ {}'.format(self.yvar_escaped, ' + '.join(xvars))
-                else:
-                    formula = '{} ~ {}'.format(self.yvar_escaped, ' + '.join(self.xvars_escaped))
+                # removing static columns from data
+                df, removed = uf.drop_static_cols(df, self.yvar, self.ds)
+                # fixing x variables to deal with dropped columns
+                xvars = self.xvars[:]
+                xvars = [ele for ele in xvars if ele not in removed]
+                xvars_escaped = ["Q('{}')".format(x) for x in xvars]
+                formula = '{} ~ {}'.format(self.yvar_escaped, ' + '.join(xvars_escaped))
+                
+                # running logistic model
                 y_samp, X_samp = patsy.dmatrices(formula, data = df, return_type = 'dataframe')
                 X_samp.drop(self.yvar, axis = 1, errors = 'ignore', inplace = True)
                 glm = GLM(y_samp, X_samp, family = sm.families.Binomial())
