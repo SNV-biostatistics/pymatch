@@ -15,7 +15,7 @@ $ pip install pymatch
 or install through anaconda
 
 ```bash
-pip install git+git://github.com/netllakula/pymatch_ds
+pip install git+git://github.com/ntellakula/pymatch_ds
 ```
 # 
 
